@@ -1,7 +1,9 @@
 ﻿using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -42,16 +44,18 @@ namespace FTApp
             videoCapture?.Retrieve(frame);
 
             Dispatcher.BeginInvoke(new ThreadStart(delegate {
-                VideoImage.Source = ConvertBitmap(frame.ToBitmap());
+                VideoImage.Source = ConvertBitmap(ProcessFrame(frame));
             }));
         }
 
+
+        // Source : https://stackoverflow.com/a/59753317
         /// <summary>
         /// Converts a Bitmap system image to a BitmapImage class.
         /// </summary>
         /// <param name="bitmap">The bitmap image</param>
         /// <returns></returns>
-        private static BitmapImage ConvertBitmap(System.Drawing.Bitmap bitmap)
+        private static BitmapImage ConvertBitmap(Bitmap bitmap)
         {
             MemoryStream memoryStream = new MemoryStream();
             bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Bmp);
@@ -62,6 +66,21 @@ namespace FTApp
             image.EndInit();
 
             return image;
+        }
+
+        private static Bitmap ProcessFrame(Mat mat)
+        {
+            Image<Bgr, byte> img = mat.ToImage<Bgr, byte>();
+
+            for (int i = 0; i < img.Data.GetLength(1); i++)
+            {
+                for (int j = 0; j < img.Data.GetLength(2); j++)
+                {
+                    img.Data[0, i, j] /= 4;
+                }
+            }
+
+            return img.ToBitmap();
         }
 
         private void VideoCaptureButton_Click(object sender, RoutedEventArgs e)
