@@ -1,5 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Reg;
 using Emgu.CV.Structure;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace FTApp
         private bool startedCapture = false;
 
         public MainWindow()
-        {
+        { 
             frame = new Mat();
             InitializeComponent();
             videoCapture = new VideoCapture(0); // 0 = first device detected (in the case of a laptop, it is the integrated webcam)
@@ -43,8 +44,10 @@ namespace FTApp
         {
             videoCapture?.Retrieve(frame);
 
+            Image<Bgr, byte> img = frame.ToImage<Bgr, byte>();
+
             Dispatcher.BeginInvoke(new ThreadStart(delegate {
-                VideoImage.Source = ConvertBitmap(ProcessFrame(frame));
+                VideoImage.Source = ConvertBitmap(ProcessImage(frame));
             }));
         }
 
@@ -68,19 +71,23 @@ namespace FTApp
             return image;
         }
 
-        private static Bitmap ProcessFrame(Mat mat)
+        private static Bitmap ProcessImage(Mat mat)
         {
             Image<Bgr, byte> img = mat.ToImage<Bgr, byte>();
 
-            for (int i = 0; i < img.Data.GetLength(1); i++)
+            byte[,,] data = img.Data;
+
+            for (int i = 0; i < img.Rows; i++)
             {
-                for (int j = 0; j < img.Data.GetLength(2); j++)
+                for (int j = 0; j < img.Cols; j++)
                 {
-                    img.Data[0, i, j] /= 4;
+                    data[i, j, 2] = (byte)(2 * data[i, j, 2] % 255);
                 }
             }
 
-            return img.ToBitmap();
+            img.Data = data;
+
+            return img.Flip(FlipType.Horizontal).ToBitmap();
         }
 
         private void VideoCaptureButton_Click(object sender, RoutedEventArgs e)
