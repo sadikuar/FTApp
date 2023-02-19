@@ -6,15 +6,27 @@
         xmlns:local="clr-namespace:FTApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Image x:Name="VideoImage" OpacityMask="Black" Grid.Row="0" Grid.Column="0"/>
-        <Button x:Name="VideoCaptureButton" Content="Start video" Grid.Row="1" Grid.Column="0" Click="VideoCaptureButton_Click"/>
+        <Grid x:Name="ControlGrid" Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Content="Controls" Grid.Row="0" HorizontalAlignment="Left"></Label>
+            <Button x:Name="OpenFileButton" Content="Choose image" Grid.Row="1" Click="OpenFileButton_Click"></Button>
+        </Grid>
+        <Border Background="Black" Grid.Row="0" Grid.Column="0">
+            <Image x:Name="VideoImage" OpacityMask="Black" Stretch="Fill"/>
+        </Border>
+        <Button x:Name="VideoCaptureButton" Content="Start video" Grid.Column="0" Grid.Row="1" Click="VideoCaptureButton_Click"/>
     </Grid>
 </Window>

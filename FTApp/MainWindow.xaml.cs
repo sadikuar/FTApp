@@ -1,24 +1,13 @@
 ﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
-using Emgu.CV.Reg;
 using Emgu.CV.Structure;
+using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FTApp
 {
@@ -32,7 +21,7 @@ namespace FTApp
         private bool startedCapture = false;
 
         public MainWindow()
-        { 
+        {
             frame = new Mat();
             InitializeComponent();
             videoCapture = new VideoCapture(0); // 0 = first device detected (in the case of a laptop, it is the integrated webcam)
@@ -46,7 +35,8 @@ namespace FTApp
 
             Image<Bgr, byte> img = frame.ToImage<Bgr, byte>();
 
-            Dispatcher.BeginInvoke(new ThreadStart(delegate {
+            Dispatcher.BeginInvoke(new ThreadStart(delegate
+            {
                 VideoImage.Source = ConvertBitmap(ProcessImage(frame));
             }));
         }
@@ -103,6 +93,29 @@ namespace FTApp
                 VideoCaptureButton.Content = "Start video";
             }
             startedCapture = !startedCapture;
+        }
+
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = "C:\\";
+            openFileDialog.Filter = "Images (*.png)|*.png|All files (*.*)|*.*";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Image image = Image.FromFile(openFileDialog.FileName);
+
+                videoCapture?.Stop();
+                VideoCaptureButton.Content = "Start video";
+
+                if (startedCapture == true)
+                {
+                    startedCapture = !startedCapture;
+                }
+
+                VideoImage.Source = ConvertBitmap(new Bitmap(image));
+            }
         }
     }
 }
