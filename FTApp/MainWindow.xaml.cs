@@ -3,10 +3,13 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace FTApp
@@ -19,6 +22,7 @@ namespace FTApp
         private readonly VideoCapture? videoCapture;
         private Mat frame;
         private bool startedCapture = false;
+        private IDictionary<string, int> cells;
 
         public MainWindow()
         {
@@ -27,6 +31,18 @@ namespace FTApp
             videoCapture = new VideoCapture(0); // 0 = first device detected (in the case of a laptop, it is the integrated webcam)
 
             videoCapture.ImageGrabbed += VideoCapture_ImageGrabbed;
+
+            cells = new Dictionary<string, int>();
+
+            cells[cell1.Name] = 1;
+            cells[cell2.Name] = 1;
+            cells[cell3.Name] = 1;
+            cells[cell4.Name] = 1;
+            cells[cell5.Name] = 1;
+            cells[cell6.Name] = 1;
+            cells[cell7.Name] = 1;
+            cells[cell8.Name] = 1;
+            cells[cell9.Name] = 1;
         }
 
         private void VideoCapture_ImageGrabbed(object? sender, EventArgs e)
@@ -104,7 +120,7 @@ namespace FTApp
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == true)
             {
-                Image image = Image.FromFile(openFileDialog.FileName);
+                System.Drawing.Image image = System.Drawing.Image.FromFile(openFileDialog.FileName);
 
                 videoCapture?.Stop();
                 VideoCaptureButton.Content = "Start video";
@@ -115,6 +131,16 @@ namespace FTApp
                 }
 
                 VideoImage.Source = ConvertBitmap(new Bitmap(image));
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox? textBox = sender as TextBox;
+
+            if (textBox != null)
+            {
+                Debug.WriteLine(textBox.Name);
             }
         }
     }

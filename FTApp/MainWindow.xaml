@@ -21,6 +21,27 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+            <Grid x:Name="MatrixInputsGrid" Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="cell1" Grid.Row="0" Grid.Column="0" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell2" Grid.Row="0" Grid.Column="1" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell3" Grid.Row="0" Grid.Column="2" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell4" Grid.Row="1" Grid.Column="0" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell5" Grid.Row="1" Grid.Column="1" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell6" Grid.Row="1" Grid.Column="2" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell7" Grid.Row="2" Grid.Column="0" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell8" Grid.Row="2" Grid.Column="1" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell9" Grid.Row="2" Grid.Column="2" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+            </Grid>
             <Label Content="Controls" Grid.Row="0" HorizontalAlignment="Left"></Label>
             <Button x:Name="OpenFileButton" Content="Choose image" Grid.Row="1" Click="OpenFileButton_Click"></Button>
         </Grid>
