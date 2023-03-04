@@ -19,9 +19,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="MatrixInputsGrid" Grid.Row="2">
+            <Label Content="Controls" Grid.Row="0" HorizontalAlignment="Left"></Label>
+            <Button x:Name="OpenFileButton" Content="Choose image" Grid.Row="1" Click="OpenFileButton_Click"></Button>
+            <Grid x:Name="MatrixInputsGrid" Grid.Row="2" Margin="100,10,100,10">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -32,18 +35,17 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="cell1" Grid.Row="0" Grid.Column="0" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
-                <TextBox x:Name="cell2" Grid.Row="0" Grid.Column="1" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
-                <TextBox x:Name="cell3" Grid.Row="0" Grid.Column="2" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
-                <TextBox x:Name="cell4" Grid.Row="1" Grid.Column="0" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
-                <TextBox x:Name="cell5" Grid.Row="1" Grid.Column="1" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
-                <TextBox x:Name="cell6" Grid.Row="1" Grid.Column="2" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
-                <TextBox x:Name="cell7" Grid.Row="2" Grid.Column="0" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
-                <TextBox x:Name="cell8" Grid.Row="2" Grid.Column="1" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
-                <TextBox x:Name="cell9" Grid.Row="2" Grid.Column="2" TextAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell1" Grid.Row="0" Grid.Column="0" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell2" Grid.Row="0" Grid.Column="1" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell3" Grid.Row="0" Grid.Column="2" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell4" Grid.Row="1" Grid.Column="0" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell5" Grid.Row="1" Grid.Column="1" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell6" Grid.Row="1" Grid.Column="2" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell7" Grid.Row="2" Grid.Column="0" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell8" Grid.Row="2" Grid.Column="1" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell9" Grid.Row="2" Grid.Column="2" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
             </Grid>
-            <Label Content="Controls" Grid.Row="0" HorizontalAlignment="Left"></Label>
-            <Button x:Name="OpenFileButton" Content="Choose image" Grid.Row="1" Click="OpenFileButton_Click"></Button>
+            <Button x:Name="ApplyKernelButton" Content="Apply kernel" Grid.Row="3"/>
         </Grid>
         <Border Background="Black" Grid.Row="0" Grid.Column="0">
             <Image x:Name="VideoImage" OpacityMask="Black" Stretch="Fill"/>

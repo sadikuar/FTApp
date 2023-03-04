@@ -4,6 +4,7 @@ using Emgu.CV.Structure;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -20,9 +21,11 @@ namespace FTApp
     public partial class MainWindow : Window
     {
         private readonly VideoCapture? videoCapture;
-        private Mat frame;
         private bool startedCapture = false;
         private IDictionary<string, int> cells;
+
+        private Mat frame;
+        private Matrix<int> kernel;
 
         public MainWindow()
         {
@@ -43,6 +46,16 @@ namespace FTApp
             cells[cell7.Name] = 1;
             cells[cell8.Name] = 1;
             cells[cell9.Name] = 1;
+
+            kernel = new Matrix<int>(3, 3);
+
+            for (int i = 0; i < kernel.Rows; i++)
+            {
+                for (int j = 0; j < kernel.Cols; j++)
+                {
+                    kernel[i, j] = 1;
+                }
+            }
         }
 
         private void VideoCapture_ImageGrabbed(object? sender, EventArgs e)
@@ -140,7 +153,18 @@ namespace FTApp
 
             if (textBox != null)
             {
-                Debug.WriteLine(textBox.Name);
+                if(!string.IsNullOrEmpty(textBox.Text))
+                {
+                    if (int.TryParse(textBox.Text, out int value))
+                    {
+                        cells[textBox.Name] = value;
+                    }
+                    else
+                    {
+                        textBox.Clear();
+                        MessageBox.Show("Input must be a number !", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
         }
     }
