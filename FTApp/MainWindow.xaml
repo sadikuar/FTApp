@@ -35,7 +35,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="cell1" Grid.Row="0" Grid.Column="0" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="cell1" Grid.Row="0" Grid.Column="0" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged" PreviewTextInput="cell1_PreviewTextInput"/>
                 <TextBox x:Name="cell2" Grid.Row="0" Grid.Column="1" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
                 <TextBox x:Name="cell3" Grid.Row="0" Grid.Column="2" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
                 <TextBox x:Name="cell4" Grid.Row="1" Grid.Column="0" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
@@ -45,7 +45,7 @@
                 <TextBox x:Name="cell8" Grid.Row="2" Grid.Column="1" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
                 <TextBox x:Name="cell9" Grid.Row="2" Grid.Column="2" TextAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"/>
             </Grid>
-            <Button x:Name="ApplyKernelButton" Content="Apply kernel" Grid.Row="3"/>
+            <Button x:Name="ApplyKernelButton" Content="Apply kernel" Grid.Row="3" Click="ApplyKernelButton_Click"/>
         </Grid>
         <Border Background="Black" Grid.Row="0" Grid.Column="0">
             <Image x:Name="VideoImage" OpacityMask="Black" Stretch="Fill"/>

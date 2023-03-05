@@ -8,9 +8,11 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace FTApp
@@ -25,7 +27,11 @@ namespace FTApp
         private IDictionary<string, int> cells;
 
         private Mat frame;
-        private Matrix<int> kernel;
+
+        private ConvolutionKernelF kernel;
+        private Image<Gray, byte> staticImage;
+
+        private static readonly Regex regex = new Regex("[^0-9.-]+");
 
         public MainWindow()
         {
@@ -47,7 +53,8 @@ namespace FTApp
             cells[cell8.Name] = 1;
             cells[cell9.Name] = 1;
 
-            kernel = new Matrix<int>(3, 3);
+            //kernel = new Matrix<float>(3, 3);
+            kernel = new ConvolutionKernelF(3, 3);
 
             for (int i = 0; i < kernel.Rows; i++)
             {
@@ -61,8 +68,6 @@ namespace FTApp
         private void VideoCapture_ImageGrabbed(object? sender, EventArgs e)
         {
             videoCapture?.Retrieve(frame);
-
-            Image<Bgr, byte> img = frame.ToImage<Bgr, byte>();
 
             Dispatcher.BeginInvoke(new ThreadStart(delegate
             {
@@ -109,6 +114,19 @@ namespace FTApp
             return img.Flip(FlipType.Horizontal).ToBitmap();
         }
 
+        private void ApplyKernelToImage()
+        {
+            // TODO: Change this because it doesn't work great
+            Image<Gray, float> appliedKernelImage = staticImage.Convolution(kernel, 0, BorderType.Reflect101);
+
+            VideoImage.Source = ConvertBitmap(appliedKernelImage.ToBitmap());
+        }
+
+        private static bool isTextAllowed(string text)
+        {
+            return regex.IsMatch(text);
+        }
+
         private void VideoCaptureButton_Click(object sender, RoutedEventArgs e)
         {
             if (!startedCapture)
@@ -133,7 +151,8 @@ namespace FTApp
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() == true)
             {
-                System.Drawing.Image image = System.Drawing.Image.FromFile(openFileDialog.FileName);
+
+                staticImage = new Image<Bgr, byte>(openFileDialog.FileName).Convert<Gray, byte>();
 
                 videoCapture?.Stop();
                 VideoCaptureButton.Content = "Start video";
@@ -143,7 +162,7 @@ namespace FTApp
                     startedCapture = !startedCapture;
                 }
 
-                VideoImage.Source = ConvertBitmap(new Bitmap(image));
+                VideoImage.Source = ConvertBitmap(staticImage.ToBitmap());
             }
         }
 
@@ -159,13 +178,18 @@ namespace FTApp
                     {
                         cells[textBox.Name] = value;
                     }
-                    else
-                    {
-                        textBox.Clear();
-                        MessageBox.Show("Input must be a number !", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
                 }
             }
+        }
+
+        private void ApplyKernelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyKernelToImage();
+        }
+
+        private void cell1_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = isTextAllowed(e.Text);
         }
     }
 }
